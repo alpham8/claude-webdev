@@ -1,0 +1,21 @@
+# Claude Code runtime files — never commit these
+.claude/
+.credentials.json
+settings.local.json
+history.jsonl
+paste-cache/
+sessions/
+shell-snapshots/
+tasks/
+backups/
+cache/
+context-mode/
+file-history/
+memory/
+todos/
+statsig/
+plugins/cache/
+
+# OS
+.DS_Store
+Thumbs.db

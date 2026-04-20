@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "WebFetch(*)",
+      "WebSearch(*)"
+    ],
+    "deny": [
+      "Bash(git push*)",
+      "Bash(git commit)",
+      "Bash(flatpak install*)",
+      "Bash(snap install*)",
+      "Bash(pip install*)",
+      "Bash(pip3 install*)",
+      "Bash(npm install -g*)",
+      "Bash(cargo install*)",
+      "Bash(gem install*)",
+      "Bash(sudo rpm*)",
+      "Bash(sudo systemctl*)",
+      "Bash(sudo rm*)",
+      "Bash(sudo chmod*)",
+      "Bash(sudo chown*)",
+      "Bash(sudo dd*)",
+      "Bash(sudo mkfs*)",
+      "Bash(sudo fdisk*)",
+      "Bash(sudo parted*)",
+      "Bash(sudo passwd*)",
+      "Bash(sudo userdel*)",
+      "Bash(sudo groupdel*)",
+      "Bash(sudo visudo*)",
+      "Bash(sudo crontab*)",
+      "Bash(sudo mount*)",
+      "Bash(sudo umount*)",
+      "Bash(sudo iptables*)",
+      "Bash(sudo firewall-cmd --permanent*)",
+      "Bash(sudo sysctl -w*)",
+      "Bash(rm -rf /*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/guard-bash.sh",
+            "statusMessage": "Sicherheitscheck..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/format-on-save.sh",
+            "statusMessage": "Formatiere..."
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/phpstan-check.sh",
+            "statusMessage": "PHPStan..."
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/tsc-check.sh",
+            "statusMessage": "TypeScript-Check..."
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "ask-questions-if-underspecified@trailofbits": true,
+    "skill-improver@trailofbits": true,
+    "claude-md-management@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "context-mode@context-mode": true,
+    "playwright@claude-plugins-official": true,
+    "example-skills@anthropic-agent-skills": true
+  },
+  "extraKnownMarketplaces": {
+    "trailofbits": {
+      "source": {
+        "source": "github",
+        "repo": "trailofbits/skills"
+      }
+    },
+    "context-mode": {
+      "source": {
+        "source": "github",
+        "repo": "mksglu/context-mode"
+      }
+    },
+    "anthropic-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/skills"
+      }
+    }
+  },
+  "effortLevel": "medium",
+  "skipDangerousModePermissionPrompt": true,
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ]
+    },
+    "playwright-chromium": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest",
+        "--browser",
+        "chromium"
+      ]
+    },
+    "playwright-firefox": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest",
+        "--browser",
+        "firefox"
+      ]
+    },
+    "mysql": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benborla29/mcp-server-mysql"
+      ],
+      "env": {
+        "MYSQL_HOST": "127.0.0.1",
+        "MYSQL_PORT": "3306",
+        "MYSQL_USER": "db",
+        "MYSQL_PASS": "db",
+        "MYSQL_DB": "",
+        "ALLOW_INSERT_OPERATION": "false",
+        "ALLOW_UPDATE_OPERATION": "false",
+        "ALLOW_DELETE_OPERATION": "false"
+      }
+    },
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    }
+  },
+  "teammateMode": "tmux"
+}
