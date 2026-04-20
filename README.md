@@ -295,6 +295,7 @@ The following plugins are pre-configured in `settings.json` and will be auto-ins
 - `context7` — live library documentation
 - `context-mode` — context window management
 - `playwright` — Playwright browser automation
+- `claude-mem` — persistent cross-session memory with tree-sitter code exploration
 
 ### Agent Browser (optional, for AI-driven browser automation)
 
@@ -331,6 +332,33 @@ agent-browser skills get electron    # Desktop apps (Electron)
 agent-browser skills get slack       # Slack automation
 agent-browser skills get dogfood     # QA testing workflows
 ```
+
+### claude-mem (persistent memory)
+
+[claude-mem](https://github.com/thedotmack/claude-mem) provides cross-session memory so Claude remembers context between conversations. It runs a lightweight worker service that captures observations during sessions and stores them in a local SQLite database.
+
+**Key capabilities:**
+- Automatic session observation (PostToolUse hook captures what you work on)
+- Cross-session memory search (`/claude-mem:mem-search`)
+- Tree-sitter-powered code exploration (`/claude-mem:smart-explore`) — AST-level structural search without reading full files
+- Implementation plan creation and execution (`/claude-mem:make-plan`, `/claude-mem:do`)
+- Knowledge agent for building topic-specific "brains" from observation history
+- Timeline reports showing project development history
+- Plugin version bump automation
+
+**Installation** is handled automatically via `settings.json`. The plugin's hooks start the worker service on session start and capture observations transparently.
+
+**Skills provided:**
+
+| Skill | Description |
+|---|---|
+| `claude-mem:mem-search` | Search persistent memory database for past work |
+| `claude-mem:smart-explore` | Token-optimized AST-based code search |
+| `claude-mem:make-plan` | Create phased implementation plans with doc discovery |
+| `claude-mem:do` | Execute plans using subagents |
+| `claude-mem:knowledge-agent` | Build and query knowledge bases from observations |
+| `claude-mem:timeline-report` | Generate narrative project history reports |
+| `claude-mem:version-bump` | Automated semantic versioning and release workflow |
 
 ---
 

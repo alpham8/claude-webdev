@@ -86,7 +86,8 @@
     "context7@claude-plugins-official": true,
     "context-mode@context-mode": true,
     "playwright@claude-plugins-official": true,
-    "example-skills@anthropic-agent-skills": true
+    "example-skills@anthropic-agent-skills": true,
+    "claude-mem@thedotmack": true
   },
   "extraKnownMarketplaces": {
     "trailofbits": {
@@ -105,6 +106,12 @@
       "source": {
         "source": "github",
         "repo": "anthropics/skills"
+      }
+    },
+    "thedotmack": {
+      "source": {
+        "source": "github",
+        "repo": "thedotmack/claude-mem"
       }
     }
   },
