@@ -238,6 +238,48 @@ sudo dnf install -y tmux
 brew install tmux
 ```
 
+### 6 — Install claude-mem Dependencies (optional)
+
+The [claude-mem](https://github.com/thedotmack/claude-mem) plugin requires **bun** (JavaScript runtime) and **uv** (Python package manager by Astral).
+
+#### bun
+
+Install via Homebrew / Linuxbrew (all platforms):
+```bash
+brew install bun
+```
+
+#### uv (Python package manager)
+
+**Ubuntu / Debian** (via Astral's standalone installer):
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+> Ubuntu does not ship uv in its apt repos. The Astral installer is the officially recommended method. Alternatively: `sudo snap install astral-uv --classic`
+
+**openSUSE Tumbleweed** (in the official repos):
+```bash
+sudo zypper install -y uv
+```
+
+**openSUSE Leap** (via devel:languages:python OBS repo):
+```bash
+sudo zypper addrepo https://download.opensuse.org/repositories/devel:/languages:/python/openSUSE_Leap_15.6/devel:languages:python.repo
+sudo zypper refresh
+sudo zypper install -y uv
+```
+
+**Fedora:**
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+**macOS:**
+```bash
+brew install uv
+```
+
 ---
 
 ## Installation

@@ -598,6 +598,38 @@ vendor/bin/phpstan analyse src/ --level=max
 vendor/bin/php-cs-fixer fix src/
 ```
 
+### Safe PHP (thecodingmachine/safe)
+
+PHP's standard library returns `false` on error for hundreds of functions (`file_get_contents`, `json_encode`, `preg_match`, etc.). This is easy to miss and leads to silent failures. [thecodingmachine/safe](https://github.com/thecodingmachine/safe) provides drop-in replacements that **throw exceptions** instead.
+
+```bash
+composer require thecodingmachine/safe
+composer require --dev thecodingmachine/phpstan-safe-rule
+```
+
+**PHPStan configuration** (`phpstan.neon`):
+```yaml
+includes:
+    - vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
+```
+
+The PHPStan rule reports any usage of native PHP functions that have a Safe equivalent, enforcing the switch.
+
+```php
+// ❌ Bad — returns false on error, easy to miss
+$content = file_get_contents('config.json');
+$data = json_decode($content);
+
+// ✅ Good — throws exceptions on error
+use function Safe\file_get_contents;
+use function Safe\json_decode;
+
+$content = file_get_contents('config.json');  // throws FilesystemException
+$data = json_decode($content);                // throws JsonException
+```
+
+Safe also provides `Safe\DateTimeImmutable` whose methods throw instead of returning `false`. For migrating existing codebases, Safe ships a Rector config (`vendor/thecodingmachine/safe/rector-migrate.php`) that rewrites native calls automatically.
+
 ---
 
 ## Common Gotchas
@@ -605,15 +637,13 @@ vendor/bin/php-cs-fixer fix src/
 1. **Forget `declare(strict_types=1)`** -- PHP silently coerces types without it.
 2. **`empty()` lies** -- `empty('0')` is `true`, `empty(0)` is `true`. Use explicit checks.
 3. **`==` vs `===`** -- `0 == 'foo'` has surprising results. Always use `===`.
-4. **`array_merge` reindexes** -- Numeric keys renumbered. Use spread `[...$a, ...$b]` to preserve.
-5. **`in_array` without strict** -- `in_array('0', [false])` is `true`. Always: `in_array($val, $arr, true)`.
-6. **`json_encode` fails silently** -- Returns `false`. Use `JSON_THROW_ON_ERROR`.
-7. **`DateTime` is mutable** -- `modify()` changes the original. Use `DateTimeImmutable`.
-8. **Autoload case sensitivity** -- Linux is case-sensitive. `UserService.php` won't load as `Userservice`.
-9. **`header()` after output** -- Headers before any output. Check for BOM, whitespace.
-10. **Float comparison** -- Never `===` floats. Use `abs($a - $b) < PHP_FLOAT_EPSILON`.
-11. **`str_replace` chain** -- Replaces in sequence, earlier results can be re-replaced. Use `strtr()`.
-12. **`unset()` in foreach** -- Modifying array during iteration causes bugs. Use `array_filter`.
+4. **`in_array` without strict** -- `in_array('0', [false])` is `true`. Always: `in_array($val, $arr, true)`.
+5. **`json_encode` fails silently** -- Returns `false`. Use `JSON_THROW_ON_ERROR`.
+6. **`DateTime` is mutable** -- `modify()` changes the original. Use `DateTimeImmutable`.
+7. **Autoload case sensitivity** -- Linux is case-sensitive. `UserService.php` won't load as `Userservice`.
+8. **`header()` after output** -- Headers before any output. Check for BOM, whitespace.
+9. **Float comparison** -- Never `===` floats. Use `abs($a - $b) < PHP_FLOAT_EPSILON`.
+10. **`str_replace` chain** -- Replaces in sequence, earlier results can be re-replaced. Use `strtr()`.
 
 ---
 
