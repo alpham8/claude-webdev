@@ -17,6 +17,7 @@ I quickly discovered that a single `CLAUDE.md` file is not the right approach fo
 - **Symfony Skills** — Full framework coverage + project scaffolding blueprint (Vite, DDEV, i18n, CAPTCHA, deploy)
 - **PHP Skills** — Modern PHP 8.0–8.4, strict typing, security (OWASP Top 10), PSR standards
 - **ECMAScript Skills** — TypeScript type system, Vue 2/3, Svelte 5, async patterns, decorators
+- **Content Testing** — Deep assertion skill ensuring tests verify actual content, not just status codes. 4-level depth pyramid, checklists for pages, APIs, feeds, forms, SEO, i18n
 - **Accessibility** — WCAG 2.1 AA checklist, keyboard navigation, ARIA, form accessibility
 - **18 Coding Rules** — PSR-12 baseline, security, type safety, clean code, performance, testing, git workflow
 - **4 Safety Hooks** — Format-on-save, static analysis, type checking, destructive command guard
@@ -59,6 +60,7 @@ I quickly discovered that a single `CLAUDE.md` file is not the right approach fo
 | `ddev-development` | DDEV commands, config reference, PHP/Node/DB version switching, port exposure |
 | `ui-animation-engineering` | Production-grade animation decisions: timing tables, easing rules, spring vs duration, transform-origin, interruptibility, stagger patterns, Sonner principles (based on Emil Kowalski) |
 | `ui-audit-redesign` | Systematic UI audit & upgrade workflow: Scan/Diagnose/Fix, anti-AI-slop patterns, typography/colour/layout/states audit, fix priority order, pre-output checklist (based on Taste Skill & Impeccable) |
+| `content-testing` | Deep assertion skill for tests: 4-level assertion depth pyramid (response → structure → content → semantics), checklists for web pages, APIs, RSS/XML, forms, SEO, multilingual, pagination. Prevents status-code-only tests. |
 | `wondelai/clean-code` | Clean Code principles (Martin) |
 | `wondelai/clean-architecture` | Clean Architecture (Martin) |
 | `wondelai/domain-driven-design` | DDD building blocks, bounded contexts |
