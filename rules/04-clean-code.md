@@ -8,7 +8,7 @@
 - **No magic numbers or strings**: Use named constants or enums.
 - **No premature abstraction**: Add layers only when they demonstrably reduce complexity.
 - **Meaningful names**: Variables, functions, and classes must reveal intent. No unexplained abbreviations.
-- **No dead code**: Remove commented-out code; use version control instead.
+- **Dead code discipline**: Remove imports, variables, and functions that YOUR changes made unused. Pre-existing dead code: mention it to the user, but do not remove it unless explicitly asked. Commented-out code: remove it — use version control instead.
 - **get vs find naming**: `getX()` expects the result to exist and throws on failure. `findX()` is a lookup that may return an empty result (empty array, empty string). Never mix these semantics.
 - **Boolean method names**: Methods returning `bool` must start with `is`, `has`, `can`, `should`, or `was` — e.g. `isActive()`, `hasPermission()`, `canEdit()`.
 
