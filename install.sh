@@ -22,7 +22,9 @@ cp "$REPO_DIR/rules/"*.md "$CLAUDE_DIR/rules/"
 # Hooks
 echo "  -> Installing hooks..."
 cp "$REPO_DIR/hooks/"*.sh "$CLAUDE_DIR/hooks/"
+cp "$REPO_DIR/hooks/"*.mjs "$CLAUDE_DIR/hooks/"
 chmod +x "$CLAUDE_DIR/hooks/"*.sh
+chmod +x "$CLAUDE_DIR/hooks/"*.mjs
 
 # Skills
 echo "  -> Installing skills..."
