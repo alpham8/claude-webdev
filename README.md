@@ -416,3 +416,78 @@ git pull
 ```
 
 Existing `settings.json` will not be overwritten. Delete `~/.claude/settings.json` first if you want a fresh install.
+
+---
+
+## Acknowledgements
+
+This setup would not exist without the work of dozens of plugin authors, skill writers, designers, and engineers who freely share their craft with the community. **Thank you.** Most of what is in this repository is either a direct copy or a careful adaptation of someone else's idea — the curation is mine, the substance belongs to the people listed below.
+
+If you find this useful, please go and star their original repositories first.
+
+### Plugins & Marketplaces (configured in `settings.json`)
+
+| Marketplace | Source | Plugins used |
+|---|---|---|
+| `claude-plugins-official` | [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | `superpowers`, `claude-md-management`, `security-guidance`, `context7`, `playwright` |
+| `trailofbits` | [trailofbits/skills](https://github.com/trailofbits/skills) | `ask-questions-if-underspecified`, `skill-improver` |
+| `context-mode` | [mksglu/context-mode](https://github.com/mksglu/context-mode) | `context-mode` |
+| `anthropic-agent-skills` | [anthropics/skills](https://github.com/anthropics/skills) | `example-skills` |
+| `thedotmack` | [thedotmack/claude-mem](https://github.com/thedotmack/claude-mem) | `claude-mem` |
+
+### Skills under `skills/`
+
+| Skill(s) | Origin |
+|---|---|
+| `wondelai/*` (24 sub-skills: clean-code, clean-architecture, ddia-systems, system-design, refactoring-patterns, software-design-philosophy, pragmatic-programmer, release-it, high-perf-browser, refactoring-ui, ux-heuristics, web-typography, design-everyday-things, microinteractions, top-design, gestalt-ui, laws-of-ux, ui-patterns, ux-design-principles, html-accessibility, cro-methodology, improve-retention, hooked-ux, domain-driven-design) | [wondelai/skills](https://github.com/wondelai/skills) — full collection by Wondelai |
+| `ui-audit-redesign` | Inspired by the `/polish` command from [pbakaus/impeccable](https://github.com/pbakaus/impeccable) (see [impeccable.style](https://impeccable.style/)) |
+| `ui-animation-engineering` | Based on [Emil Kowalski](https://emilkowal.ski/)'s design engineering writing (Sonner, Vaul) |
+| `content-testing` | Authored for this repo |
+| `php`, `symfony`, `symfony-project-setup`, `shopware`, `shopware-ddev`, `shopware-utils`, `vue`, `svelte`, `typescript`, `csharp`, `aspnet-core`, `ddev-development` | Authored for this repo, distilled from each project's official documentation |
+
+### Foundational standards & literature
+
+The `rules/` baseline and several skills draw heavily on:
+
+- [PSR-12 — Extended Coding Style](https://www.php-fig.org/psr/psr-12/)
+- [WCAG 2.1 AA](https://www.w3.org/TR/WCAG21/)
+- [Conventional Commits](https://www.conventionalcommits.org/)
+- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
+- [Refactoring UI](https://www.refactoringui.com/) — Adam Wathan & Steve Schoger
+- *Clean Code* / *Clean Architecture* — Robert C. Martin
+- *The Pragmatic Programmer* — Hunt & Thomas
+- [*A Philosophy of Software Design*](https://web.stanford.edu/~ouster/cgi-bin/book.php) — John Ousterhout
+- [*Designing Data-Intensive Applications*](https://dataintensive.net/) — Martin Kleppmann
+- [*Refactoring*](https://martinfowler.com/books/refactoring.html) — Martin Fowler
+- *Release It!* — Michael T. Nygard
+- *Don't Make Me Think* — Steve Krug
+- *The Design of Everyday Things* — Don Norman
+- *Microinteractions* — Dan Saffer
+- *On Web Typography* — Jason Santa Maria
+- *Hooked* — Nir Eyal
+- *Tiny Habits* / B=MAP behaviour design — BJ Fogg
+- [Laws of UX](https://lawsofux.com/) — Jon Yablonski
+- [Nielsen Norman Group](https://www.nngroup.com/) — usability heuristics & research
+- [Smashing Magazine](https://www.smashingmagazine.com/) — long-form web design articles
+
+### Tooling referenced from skills / hooks
+
+- [Anthropic Claude Code](https://docs.anthropic.com/en/docs/claude-code) — the host harness this configuration targets
+- [DDEV](https://ddev.com/) — local containerised development
+- [Shopware 6 Developer Portal](https://developer.shopware.com/) — official Shopware 6 docs
+- [Shopware 5 Developer Portal](https://developers.shopware.com/) — official Shopware 5 docs
+- [Enlight Framework — `enlight.de` (Wayback Machine, 2013-01-06)](https://web.archive.org/web/20130106210925/http://www.enlight.de/) — original docs of the open source eCommerce framework that Shopware 5 is built on; recovered from the Internet Archive since the live site is gone
+- [Symfony documentation](https://symfony.com/doc/current/index.html)
+- [Vue.js](https://vuejs.org/), [Svelte](https://svelte.dev/), [TypeScript](https://www.typescriptlang.org/), [Microsoft Learn (.NET / C#)](https://learn.microsoft.com/en-us/dotnet/)
+
+If your work is referenced here without proper attribution, please open an issue and it will be fixed immediately.
+
+---
+
+## Disclaimer
+
+I do not — and cannot — claim copyright over the contents of this repository. A large portion of it was assembled with the help of AI tooling, and many of the rules, skills, hooks, and configurations are direct or near-direct copies of work originally created by the authors listed in the *Acknowledgements* section above. All credit and rights belong to the respective original authors.
+
+This repository is provided **"as is", without warranty of any kind**, express or implied, including but not limited to fitness for a particular purpose, security, correctness, or non-infringement. **Use of these tools, skills, hooks, and configurations is entirely at your own risk.** You are responsible for reviewing what gets installed into your environment and for the consequences of running it.
+
+If you are an original author and would like your work removed or its attribution corrected, please open an issue on this repository.
