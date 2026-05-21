@@ -34,3 +34,4 @@ Project-local files **always override this baseline**:
 @rules/16-accessibility.md
 @rules/17-i18n.md
 @rules/18-git-workflow.md
+@rules/19-css.md

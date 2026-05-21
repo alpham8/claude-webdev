@@ -23,6 +23,43 @@ Implicit or inferred types are only acceptable where the type is unambiguous and
 - Generics over loose union types where appropriate.
 - Exported / public APIs must always have explicit types.
 - No implicit `any` via `tsconfig` (`"strict": true` minimum).
+- No `@ts-ignore` or `@ts-expect-error` without a comment explaining the exact reason. Prefer fixing the underlying type issue.
+- No unsafe type assertions (`value as SomeType`) unless preceded by a narrowing check or runtime guard that proves the assertion correct.
+- Use `satisfies` to validate object literals against a type without widening the inferred type.
+- Use discriminated unions (a shared `type` or `kind` literal field) to model state machines and variant types — never a bag of optional fields.
+
+```typescript
+// ❌ Bad — optional fields hide which combinations are actually valid
+interface State {
+    loading?: boolean;
+    data?: User;
+    error?: string;
+}
+
+// ✅ Good — discriminated union, every state is explicit and exhaustive
+type State =
+    | { kind: 'loading' }
+    | { kind: 'success'; data: User }
+    | { kind: 'error'; message: string };
+
+// ❌ Bad — unsafe assertion, no evidence the cast is correct
+const user = response.data as User;
+
+// ✅ Good — runtime guard before use
+function isUser(value: unknown): value is User
+{
+    return (
+        typeof value === 'object' &&
+        value !== null &&
+        'id' in value &&
+        typeof (value as Record<string, unknown>).id === 'number'
+    );
+}
+
+if (isUser(response.data)) {
+    // response.data is now User — proven at runtime
+}
+```
 
 ### Null Avoidance (Non-Negotiable)
 

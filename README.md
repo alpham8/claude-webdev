@@ -19,7 +19,8 @@ I quickly discovered that a single `CLAUDE.md` file is not the right approach fo
 - **ECMAScript Skills** — TypeScript type system, Vue 2/3, Svelte 5, async patterns, decorators
 - **Content Testing** — Deep assertion skill ensuring tests verify actual content, not just status codes. 4-level depth pyramid, checklists for pages, APIs, feeds, forms, SEO, i18n
 - **Accessibility** — WCAG 2.1 AA checklist, keyboard navigation, ARIA, form accessibility
-- **18 Coding Rules** — PSR-12 baseline, security, type safety, clean code, performance, testing, git workflow
+- **19 Coding Rules** — PSR-12 baseline, security, type safety, clean code, performance, testing, git workflow, CSS Box Model ordering
+- **3 German Writing Skills** — Technical colleague voice, product copywriter, marketing copywriter (sales-psychology, trust ladder, anti-AI-slop)
 - **4 Safety Hooks** — Format-on-save, static analysis, type checking, destructive command guard
 
 ## What's Included
@@ -61,6 +62,9 @@ I quickly discovered that a single `CLAUDE.md` file is not the right approach fo
 | `ui-animation-engineering` | Production-grade animation decisions: timing tables, easing rules, spring vs duration, transform-origin, interruptibility, stagger patterns, Sonner principles (based on Emil Kowalski) |
 | `ui-audit-redesign` | Systematic UI audit & upgrade workflow: Scan/Diagnose/Fix, anti-AI-slop patterns, typography/colour/layout/states audit, fix priority order, pre-output checklist (based on Taste Skill & Impeccable) |
 | `content-testing` | Deep assertion skill for tests: 4-level assertion depth pyramid (response → structure → content → semantics), checklists for web pages, APIs, RSS/XML, forms, SEO, multilingual, pagination. Prevents status-code-only tests. |
+| `tech-colleague-de` | German technical writing voice: PR descriptions, READMEs, bug reports, technical emails. Direct, specific, no filler. Anti-AI-slop rules (no em dash, no uniform sentence length, no passive-as-courtesy). |
+| `copywriter-de` | German product copywriter: product descriptions, feature announcements, technical blog posts. Benefit-first, concrete numbers, specific CTAs. Anti-AI-slop pattern kills. |
+| `marketing-copywriter-de` | German sales copywriter for non-technical readers: homepage, landing pages, booking pages. 7-step trust ladder (AIDA/PAS/BAB), CRAVENS social proof, objection removal, micro-commitment CTAs. Sales-psychology-driven structure. |
 | `wondelai/clean-code` | Clean Code principles (Martin) |
 | `wondelai/clean-architecture` | Clean Architecture (Martin) |
 | `wondelai/domain-driven-design` | DDD building blocks, bounded contexts |
@@ -443,7 +447,24 @@ If you find this useful, please go and star their original repositories first.
 | `ui-audit-redesign` | Inspired by the `/polish` command from [pbakaus/impeccable](https://github.com/pbakaus/impeccable) (see [impeccable.style](https://impeccable.style/)) |
 | `ui-animation-engineering` | Based on [Emil Kowalski](https://emilkowal.ski/)'s design engineering writing (Sonner, Vaul) |
 | `content-testing` | Authored for this repo |
+| `tech-colleague-de`, `copywriter-de`, `marketing-copywriter-de` | Authored for this repo — see *Writing Skills* sources below |
 | `php`, `symfony`, `symfony-project-setup`, `shopware`, `shopware-ddev`, `shopware-utils`, `vue`, `svelte`, `typescript`, `csharp`, `aspnet-core`, `ddev-development` | Authored for this repo, distilled from each project's official documentation |
+
+### Writing Skills — Research Sources
+
+The `rules/19-css.md` and the three German writing skills (`tech-colleague-de`, `copywriter-de`, `marketing-copywriter-de`) draw on:
+
+**Anti-AI-slop pattern research:**
+- [anti-ai-slop-writing](https://github.com/jalaalrd/anti-ai-slop-writing) — jalaalrd — 50+ banned words, 35+ banned phrases, 16 banned sentence openers, 10 structural patterns, punctuation tells; based on Carnegie Mellon (2025), Wikipedia's *Signs of AI Writing*, Buffer's 52M post analysis
+- [avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing) — Conor Bronsdon — 42 documented pattern categories with before/after examples; 3-tier vocabulary replacement table (109 entries); structural detection v3.4
+
+**Copywriting frameworks:**
+- [Copywriting Formulas (Thrive Themes)](https://thrivethemes.com/copywriting-formulas/) — AIDA, PAS, BAB, TMNTU frameworks
+- [PAS Framework (SaasFunnelLab)](https://www.saasfunnellab.com/essay/pas-copywriting-framework/) — Problem → Agitation → Solution structure
+- [Social Proof & CRAVENS model (CXL)](https://cxl.com/blog/is-social-proof-really-that-important/) — Credible, Relevant, Attractive, Visual, Enumerated, Nearby, Specific
+- [Landing Page Copywriting Tips (Jeremy Mac)](https://www.jeremymac.com/blogs/news/20-landing-page-copywriting-tips-that-convert-like-crazy-in-2025-beginner-friendly) — specificity, micro-commitments, hesitation removal
+
+---
 
 ### Foundational standards & literature
 
