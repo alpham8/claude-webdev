@@ -35,3 +35,4 @@ Project-local files **always override this baseline**:
 @rules/17-i18n.md
 @rules/18-git-workflow.md
 @rules/19-css.md
+@rules/20-cpp.md
