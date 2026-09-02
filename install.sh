@@ -14,11 +14,12 @@ install_claude()
     echo "==> Claude Code -> $CLAUDE_DIR"
     mkdir -p "$CLAUDE_DIR/rules" "$CLAUDE_DIR/skills" "$CLAUDE_DIR/hooks"
 
-    if compgen -G "$CLAUDE_DIR/rules/*.md" > /dev/null || compgen -G "$CLAUDE_DIR/skills/*" > /dev/null || [ -f "$CLAUDE_DIR/CLAUDE.md" ]; then
+    if compgen -G "$CLAUDE_DIR/rules/*.md" > /dev/null || compgen -G "$CLAUDE_DIR/skills/*" > /dev/null || compgen -G "$CLAUDE_DIR/hooks/*" > /dev/null || [ -f "$CLAUDE_DIR/CLAUDE.md" ]; then
         declare -r BACKUP_DIR="$CLAUDE_DIR/backup-$(date +%Y%m%d-%H%M%S)"
         mkdir -p "$BACKUP_DIR"
         [ -d "$CLAUDE_DIR/rules" ] && cp -r "$CLAUDE_DIR/rules" "$BACKUP_DIR/rules"
         [ -d "$CLAUDE_DIR/skills" ] && cp -r "$CLAUDE_DIR/skills" "$BACKUP_DIR/skills"
+        compgen -G "$CLAUDE_DIR/hooks/*" > /dev/null && cp -r "$CLAUDE_DIR/hooks" "$BACKUP_DIR/hooks"
         [ -f "$CLAUDE_DIR/CLAUDE.md" ] && cp "$CLAUDE_DIR/CLAUDE.md" "$BACKUP_DIR/CLAUDE.md"
         echo "    [!] Bestehende Dateien gesichert nach $BACKUP_DIR"
     fi
@@ -44,11 +45,12 @@ install_opencode()
     echo "==> opencode -> $OPENCODE_DIR"
     mkdir -p "$OPENCODE_DIR/rules" "$OPENCODE_DIR/skills" "$OPENCODE_DIR/plugins"
 
-    if compgen -G "$OPENCODE_DIR/rules/*.md" > /dev/null || compgen -G "$OPENCODE_DIR/skills/*" > /dev/null || [ -f "$OPENCODE_DIR/AGENTS.md" ]; then
+    if compgen -G "$OPENCODE_DIR/rules/*.md" > /dev/null || compgen -G "$OPENCODE_DIR/skills/*" > /dev/null || compgen -G "$OPENCODE_DIR/plugins/*" > /dev/null || [ -f "$OPENCODE_DIR/AGENTS.md" ]; then
         declare -r BACKUP_DIR="$OPENCODE_DIR/backup-$(date +%Y%m%d-%H%M%S)"
         mkdir -p "$BACKUP_DIR"
         [ -d "$OPENCODE_DIR/rules" ] && cp -r "$OPENCODE_DIR/rules" "$BACKUP_DIR/rules"
         [ -d "$OPENCODE_DIR/skills" ] && cp -r "$OPENCODE_DIR/skills" "$BACKUP_DIR/skills"
+        compgen -G "$OPENCODE_DIR/plugins/*" > /dev/null && cp -r "$OPENCODE_DIR/plugins" "$BACKUP_DIR/plugins"
         [ -f "$OPENCODE_DIR/AGENTS.md" ] && cp "$OPENCODE_DIR/AGENTS.md" "$BACKUP_DIR/AGENTS.md"
         echo "    [!] Bestehende Dateien gesichert nach $BACKUP_DIR"
     fi
