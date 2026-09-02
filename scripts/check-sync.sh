@@ -123,10 +123,15 @@ OPENCODE_JSON="$REPO_ROOT/adapters/opencode/opencode.json"
 
 SECTION_DRIFT=0
 
+# Strip HTML comments (including multi-line ones) once, so the forward and reverse
+# checks below both see the same "what is actually active" view of CLAUDE.md.
+CLAUDE_MD_STRIPPED="$TMPDIR_SYNC/claude_md_stripped"
+perl -0777 -pe 's/<!--.*?-->//gs' "$CLAUDE_MD" > "$CLAUDE_MD_STRIPPED"
+
 for rule in "$REPO_ROOT"/rules/*.md; do
     rule_file="$(basename "$rule")"
 
-    if ! grep -v '<!--.*-->' "$CLAUDE_MD" | grep -q "@rules/$rule_file"; then
+    if ! grep -q "@rules/$rule_file" "$CLAUDE_MD_STRIPPED"; then
         echo -e "  ${RED}Nicht in CLAUDE.md: $rule_file${NC}"
         DRIFT=1
         SECTION_DRIFT=1
@@ -149,7 +154,7 @@ while IFS= read -r ref; do
         DRIFT=1
         SECTION_DRIFT=1
     fi
-done < <(grep -v '<!--.*-->' "$CLAUDE_MD" | grep -oP '(?<=@rules/)[A-Za-z0-9_-]+\.md' || true)
+done < <(grep -oP '(?<=@rules/)[A-Za-z0-9_-]+\.md' "$CLAUDE_MD_STRIPPED" || true)
 
 while IFS= read -r ref; do
     [ -n "$ref" ] || continue
