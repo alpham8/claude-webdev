@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CLAUDE_HOOKS="${CLAUDE_HOOKS_DIR:-$HOME/.claude/hooks}"
-OPENCODE_HOOKS="$(cd "$(dirname "$0")/.." && pwd)/plugins/hooks.ts"
+CLAUDE_HOOKS="$(cd "$(dirname "$0")/.." && pwd)/adapters/claude/hooks"
+OPENCODE_HOOKS="$(cd "$(dirname "$0")/.." && pwd)/adapters/opencode/plugins/hooks.ts"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -112,6 +112,32 @@ print_header "Tool-Pfade"
 } | sort -u > "$TMPDIR_SYNC/ts_tools"
 
 compare_sets "$TMPDIR_SYNC/shell_tools" "$TMPDIR_SYNC/ts_tools"
+
+# --- Rules Wiring ---
+
+print_header "Rules-Verdrahtung"
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+CLAUDE_MD="$REPO_ROOT/adapters/claude/CLAUDE.md"
+OPENCODE_JSON="$REPO_ROOT/adapters/opencode/opencode.json"
+
+for rule in "$REPO_ROOT"/rules/*.md; do
+    rule_file="$(basename "$rule")"
+
+    if ! grep -q "@rules/$rule_file" "$CLAUDE_MD"; then
+        echo -e "  ${RED}Nicht in CLAUDE.md: $rule_file${NC}"
+        DRIFT=1
+    fi
+
+    if ! grep -q "rules/$rule_file" "$OPENCODE_JSON"; then
+        echo -e "  ${RED}Nicht in opencode.json: $rule_file${NC}"
+        DRIFT=1
+    fi
+done
+
+if [ "$DRIFT" -eq 0 ]; then
+    echo -e "  ${GREEN}Alle $(ls "$REPO_ROOT"/rules/*.md | wc -l) Rules in beiden Adaptern verdrahtet${NC}"
+fi
 
 # --- Result ---
 
