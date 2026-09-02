@@ -3,7 +3,7 @@ name: shopware-versions
 description: Use when checking Shopware 6 version compatibility or planning an upgrade — the PHP, Node, MySQL and admin build matrix, breaking changes from 6.4 through 6.7, and the Vue 2 to Vue 3 administration migration. Triggers on version compatibility questions, upgrade planning, "which Shopware version supports", or porting admin components from Vue 2 to Vue 3.
 ---
 
-# Shopware 6 — Versions, Compatibility and Troubleshooting
+# Shopware 6 — Versions and Compatibility
 
 See the `shopware` skill for the map of Shopware skills.
 

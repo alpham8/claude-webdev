@@ -100,6 +100,3 @@ bin/console system:config:set SwagExample.config.myKey value
 bin/console sales-channel:list
 bin/console user:change-password admin
 ```
-
----
-
