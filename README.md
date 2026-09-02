@@ -49,7 +49,7 @@ I quickly discovered that a single instruction file (`CLAUDE.md`, `AGENTS.md`, �
 - **20 Coding Rules** — PSR-12 baseline, security, type safety, clean code, performance, testing, git workflow, CSS Box Model ordering, C++ conventions
 - **3 German Writing Skills** — Technical colleague voice, product copywriter, marketing copywriter (sales-psychology, trust ladder, anti-AI-slop)
 - **SEO Skill** — On-page SEO reference for blog posts and landing pages: SERP limits (title, meta, slug), heading hierarchy, image SEO, structured data (BlogPosting, BreadcrumbList, FAQPage), Open Graph, E-E-A-T, Core Web Vitals, German SEO specifics (umlauts, Flesch DE, hreflang DACH)
-- **4 Safety Hooks** — Format-on-save, static analysis, type checking, destructive command guard
+- **5 Safety Hooks** — Format-on-save, static analysis, type checking, destructive command guard, context-mode plugin cache self-heal
 
 ## What's Included
 
@@ -69,6 +69,7 @@ I quickly discovered that a single instruction file (`CLAUDE.md`, `AGENTS.md`, �
 | `format-on-save.sh` | After Write / Edit | Runs PHP-CS-Fixer (PHP) or Prettier (TS/JS/Vue/CSS) if available in project |
 | `phpstan-check.sh` | After Write / Edit on `*.php` | Runs PHPStan if `vendor/bin/phpstan` exists (non-blocking warning) |
 | `tsc-check.sh` | After Write / Edit on `*.ts` / `*.tsx` | Runs TypeScript type-check if `tsconfig.json` exists (non-blocking warning) |
+| `context-mode-cache-heal.mjs` | On session start | Repairs stale context-mode plugin cache install paths (symlinks, version-path normalization), honouring `CLAUDE_CONFIG_DIR` |
 
 ### Skills
 
