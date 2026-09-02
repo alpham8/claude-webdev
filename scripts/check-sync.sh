@@ -121,21 +121,47 @@ REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 CLAUDE_MD="$REPO_ROOT/adapters/claude/CLAUDE.md"
 OPENCODE_JSON="$REPO_ROOT/adapters/opencode/opencode.json"
 
+SECTION_DRIFT=0
+
 for rule in "$REPO_ROOT"/rules/*.md; do
     rule_file="$(basename "$rule")"
 
-    if ! grep -q "@rules/$rule_file" "$CLAUDE_MD"; then
+    if ! grep -v '<!--.*-->' "$CLAUDE_MD" | grep -q "@rules/$rule_file"; then
         echo -e "  ${RED}Nicht in CLAUDE.md: $rule_file${NC}"
         DRIFT=1
+        SECTION_DRIFT=1
     fi
 
-    if ! grep -q "rules/$rule_file" "$OPENCODE_JSON"; then
+    if ! grep -q "\"~/.config/opencode/rules/$rule_file\"" "$OPENCODE_JSON"; then
         echo -e "  ${RED}Nicht in opencode.json: $rule_file${NC}"
         DRIFT=1
+        SECTION_DRIFT=1
     fi
 done
 
-if [ "$DRIFT" -eq 0 ]; then
+# Reverse direction: every referenced rule must resolve to a real file in rules/.
+
+while IFS= read -r ref; do
+    [ -n "$ref" ] || continue
+
+    if [ ! -f "$REPO_ROOT/rules/$ref" ]; then
+        echo -e "  ${RED}CLAUDE.md verweist auf fehlende Regel: $ref${NC}"
+        DRIFT=1
+        SECTION_DRIFT=1
+    fi
+done < <(grep -v '<!--.*-->' "$CLAUDE_MD" | grep -oP '(?<=@rules/)[A-Za-z0-9_-]+\.md' || true)
+
+while IFS= read -r ref; do
+    [ -n "$ref" ] || continue
+
+    if [ ! -f "$REPO_ROOT/rules/$ref" ]; then
+        echo -e "  ${RED}opencode.json verweist auf fehlende Regel: $ref${NC}"
+        DRIFT=1
+        SECTION_DRIFT=1
+    fi
+done < <(grep -oP '(?<=~/\.config/opencode/rules/)[A-Za-z0-9_-]+\.md' "$OPENCODE_JSON" || true)
+
+if [ "$SECTION_DRIFT" -eq 0 ]; then
     echo -e "  ${GREEN}Alle $(ls "$REPO_ROOT"/rules/*.md | wc -l) Rules in beiden Adaptern verdrahtet${NC}"
 fi
 
