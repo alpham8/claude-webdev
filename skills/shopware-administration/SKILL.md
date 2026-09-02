@@ -1,6 +1,6 @@
 ---
 name: shopware-administration
-description: Use when extending the Shopware 6 Administration — Vue components, module registration, twig-based component overrides, data handling via the admin repository factory, and the Vue 2 to Vue 3 migration. Triggers on Shopware.Component.register, Module.register, sw-admin overrides, or admin criteria building.
+description: Use when extending the Shopware 6 Administration — Vue components, module registration, twig-based component overrides, and data handling via the admin repository factory. Triggers on Shopware.Component.register, Module.register, sw-admin overrides, or admin criteria building.
 ---
 
 # Shopware 6 — Administration (Vue.js)
