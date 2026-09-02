@@ -120,9 +120,6 @@ Hook types: `before`, `after`, `replace` (`replace` calls `executeParent()` to c
 
 ---
 
-
-## Common SW5 Problems
-
 ### Common SW5 Problems
 
 | Symptom | Cause | Fix |
