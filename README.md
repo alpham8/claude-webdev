@@ -1,19 +1,46 @@
-# Claude Code — Web Development Setup
+# agentic-webdev
 
-A ready-to-use collection of skills, rules, hooks, and settings for Claude Code, optimised for PHP / Symfony / Shopware / JavaScript / TypeScript development on Linux.
+Skills and coding rules for AI coding agents. The skills follow the open Agent
+Skills standard (agentskills.io) and work in Claude Code, Cursor, OpenAI Codex,
+GitHub Copilot, Gemini CLI, opencode and ~70 further agents. The rules are
+binding coding standards.
+
+## Installation
+
+```bash
+git clone git@github.com:alpham8/agentic-webdev.git
+cd agentic-webdev
+./install.sh
+```
+
+The installer detects which agents you have and installs **rules and skills
+together**. That pairing is deliberate: skills are recommendations an agent may
+follow, rules are binding. If you already have rules, skills, hooks, or an
+instruction file installed, `install.sh` backs the existing files up into a
+timestamped directory before overwriting anything, and prints where.
+
+### Other agents
+
+```bash
+npx skills add alpham8/agentic-webdev --agent '*' -g
+```
+
+> **`npx skills add` installs skills only.** The binding coding rules come
+> solely from `install.sh`. Pulling skills alone gives you recommendations
+> without the rules that constrain them.
 
 ## Why This Exists
 
 AI models are trained on the internet. The internet contains plenty of low-quality, insecure, and outdated code. To get consistently better output from AI coding assistants, you need to guide them with tools and instructions.
 
-I quickly discovered that a single `CLAUDE.md` file is not the right approach for implementing all my rules and techniques. The ecosystem already has many excellent skills, plugins, and hooks — but they are scattered across dozens of repositories, marketplaces, and blog posts. Finding, evaluating, and combining them takes hours.
+I quickly discovered that a single instruction file (`CLAUDE.md`, `AGENTS.md`, …) is not the right approach for implementing all my rules and techniques. The ecosystem already has many excellent skills, plugins, and hooks — but they are scattered across dozens of repositories, marketplaces, and blog posts. Finding, evaluating, and combining them takes hours.
 
 **This is a curated, ready-to-use collection with a one-command installer.**
 
 ### Top Features
 
 - **Frontend Design Skills** — Animation engineering (timing, easing, springs), UI audit & redesign workflow (anti-AI-slop patterns), typography, colour systems, micro-interactions
-- **Shopware 5 & 6 Skills** — Plugin architecture, DAL, events, Admin components, Storefront JS, DDEV setup, dustin/shopware-utils
+- **Shopware Skills (13)** — Entry-point skill routes to DAL, services, storefront, administration, CMS elements, deployment, version compatibility & migration, troubleshooting, Shopware 5, Composable Frontends, DDEV setup, dustin/shopware-utils
 - **Symfony Skills** — Full framework coverage + project scaffolding blueprint (Vite, DDEV, i18n, CAPTCHA, deploy)
 - **PHP Skills** — Modern PHP 8.0–8.4, strict typing, security (OWASP Top 10), PSR standards
 - **ECMAScript Skills** — TypeScript type system, Vue 2/3, Svelte 5, async patterns, decorators
@@ -28,12 +55,11 @@ I quickly discovered that a single `CLAUDE.md` file is not the right approach fo
 
 | Path | Purpose |
 |---|---|
-| `CLAUDE.md` | Global engineering baseline (coding standards, workflow rules) |
-| `rules/` | 18 rule files referenced from CLAUDE.md |
-| `hooks/` | 4 PostToolUse / PreToolUse hook scripts |
-| `skills/` | Domain-specific reference skills for Claude |
-| `settings.json` | Claude Code settings (plugins, MCP servers, hooks, permissions) |
-| `install.sh` | One-shot installer into `~/.claude` |
+| `install.sh` | Detects installed agents (Claude Code, opencode) and installs rules and skills for each, backing up existing files first |
+| `rules/` | 20 rule files — binding coding standards, tool-independent |
+| `skills/` | 31 domain-specific reference skills, tool-independent (Agent Skills standard) |
+| `adapters/claude/` | Claude Code specifics: `CLAUDE.md`, `settings.json`, hooks |
+| `adapters/opencode/` | opencode specifics: `AGENTS.md`, `opencode.json`, plugin hooks |
 
 ### Hooks
 
@@ -51,7 +77,17 @@ I quickly discovered that a single `CLAUDE.md` file is not the right approach fo
 | `php` | Modern PHP 8.0-8.4, strict typing, enums, readonly, OOP, PSR standards, security (LFI/RFI, SQL injection, XSS, CSRF, sessions, passwords, uploads, OWASP Top 10) |
 | `symfony` | Symfony framework components: DI, events, routing, forms, serializer, validator, messenger, mailer, security, cache, console, Twig, Doctrine, real-world patterns |
 | `symfony-project-setup` | Project scaffolding blueprint: directory structure, bundles, services, Vite/pentatrion, DDEV, PHPUnit, i18n, Altcha CAPTCHA, deploy scripts |
-| `shopware` | Shopware 5 & 6 architecture, DAL, events, templates, CMS elements, version compatibility, Composable Frontends (headless) |
+| `shopware` | Entry point: architecture, plugin concept, and which Shopware skill covers which task |
+| `shopware-dal` | Data Abstraction Layer, EntityExtension, custom fields |
+| `shopware-services` | Event subscribers, Store API routes, service decoration, scheduled tasks, `config.xml` |
+| `shopware-storefront` | Controllers, pages, Twig blocks, storefront JavaScript |
+| `shopware-administration` | Administration Vue components, modules, overrides |
+| `shopware-cms-elements` | Custom CMS elements and blocks (Erlebniswelten) |
+| `shopware-deployment` | static-plugins, Store as Composer repository, partner wildcards |
+| `shopware-versions` | Compatibility matrix, breaking changes, upgrade planning, Vue 2 to Vue 3 admin migration |
+| `shopware-troubleshooting` | Something does not take effect: Twig overrides, JS plugins, cache, install and upgrade failures, gotchas |
+| `shopware5` | Shopware 5: Enlight, Smarty, hooks, SW5-vs-SW6 |
+| `shopware-composable-frontends` | Headless frontends |
 | `shopware-ddev` | Shopware-specific DDEV setup (Elasticsearch, Redis, Varnish, Mailpit) |
 | `shopware-utils` | dustin/shopware-utils library (sub-bundles, auto-resources, configuration objects) |
 | `vue` | Vue 2 Options API + Vue 3 Composition API, script setup, reactivity, props/emits, slots, Pinia, TypeScript integration, Shopware Admin patterns |
@@ -68,6 +104,7 @@ I quickly discovered that a single `CLAUDE.md` file is not the right approach fo
 | `copywriter-de` | German product copywriter: product descriptions, feature announcements, technical blog posts. Benefit-first, concrete numbers, specific CTAs. Anti-AI-slop pattern kills. |
 | `marketing-copywriter-de` | German sales copywriter for non-technical readers: homepage, landing pages, booking pages. 7-step trust ladder (AIDA/PAS/BAB), CRAVENS social proof, objection removal, micro-commitment CTAs. Sales-psychology-driven structure. |
 | `seo` | On-page SEO reference: SERP pixel/character limits (title, meta description, slug), heading hierarchy, image SEO, internal/external linking, content structure, structured data (BlogPosting, BreadcrumbList, FAQPage), Open Graph, E-E-A-T, Core Web Vitals, XML sitemap, content freshness, German SEO (umlauts, Flesch DE, hreflang DACH). Includes full blog post checklist. |
+| `wondelai` | Directory of 24 curated software-engineering and UX reference skills, listed individually below |
 | `wondelai/clean-code` | Clean Code principles (Martin) |
 | `wondelai/clean-architecture` | Clean Architecture (Martin) |
 | `wondelai/domain-driven-design` | DDD building blocks, bounded contexts |
@@ -291,16 +328,13 @@ brew install uv
 
 ---
 
-## Installation
+### Running `install.sh`
 
-```bash
-git clone https://github.com/alpham8/claude-webdev.git
-cd claude-webdev
-chmod +x install.sh
-./install.sh
-```
-
-The installer copies all configuration into `~/.claude`. If `~/.claude/settings.json` already exists, it will **not** be overwritten — merge manually.
+Once the prerequisites above are installed, run `./install.sh` from the cloned
+repository root (see [Installation](#installation) at the top of this
+document). It copies rules and skills into `~/.claude` for Claude Code and
+into `~/.config/opencode` for opencode. An existing `settings.json` /
+`opencode.json` is **not** overwritten — merge manually.
 
 ---
 
@@ -452,7 +486,7 @@ If you find this useful, please go and star their original repositories first.
 | `content-testing` | Authored for this repo |
 | `tech-colleague-de`, `copywriter-de`, `marketing-copywriter-de` | Authored for this repo — see *Writing Skills* sources below |
 | `seo` | Authored for this repo — see *SEO Skill* sources below |
-| `php`, `symfony`, `symfony-project-setup`, `shopware`, `shopware-ddev`, `shopware-utils`, `vue`, `svelte`, `typescript`, `csharp`, `aspnet-core`, `ddev-development`, `mixxx-cpp` | Authored for this repo, distilled from each project's official documentation |
+| `php`, `symfony`, `symfony-project-setup`, `shopware`, `shopware-dal`, `shopware-services`, `shopware-storefront`, `shopware-administration`, `shopware-cms-elements`, `shopware-deployment`, `shopware-versions`, `shopware-troubleshooting`, `shopware5`, `shopware-composable-frontends`, `shopware-ddev`, `shopware-utils`, `vue`, `svelte`, `typescript`, `csharp`, `aspnet-core`, `ddev-development`, `mixxx-cpp` | Authored for this repo, distilled from each project's official documentation |
 
 ### Writing Skills — Research Sources
 
