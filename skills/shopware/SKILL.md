@@ -21,13 +21,13 @@ skills are recommendations.
 | Task | Skill |
 |------|-------|
 | Entities, criteria, associations, custom fields | `shopware-dal` |
-| Event subscribers, Store API routes, service decoration, scheduled tasks, `config.xml` | `shopware-services` |
+| Event subscribers, service registration and decoration, Store API routes, scheduled tasks, `config.xml` | `shopware-services` |
 | Controllers, pages, Twig blocks, storefront JavaScript | `shopware-storefront` |
 | Administration Vue components, modules, overrides | `shopware-administration` |
 | Custom CMS elements and blocks (Erlebniswelten) | `shopware-cms-elements` |
 | Where plugin code lives, Composer path repos, Store as repository | `shopware-deployment` |
 | Version compatibility, breaking changes, upgrade planning, Vue 2 to Vue 3 admin migration | `shopware-versions` |
-| Something does not take effect: Twig overrides, JS plugins, cache, install and upgrade failures, gotchas | `shopware-troubleshooting` |
+| Something does not take effect: Twig overrides, already-written JS plugins that don't run, cache, install and upgrade failures, gotchas | `shopware-troubleshooting` |
 | Headless frontends | `shopware-composable-frontends` |
 | Anything Shopware 5 | `shopware5` |
 | DDEV commands for Shopware | `shopware-ddev` |
@@ -41,8 +41,6 @@ skills are recommendations.
 | **Symfony framework** (DI, events, routing, forms, serializer, etc.) | `symfony` |
 | **Vue.js** (Shopware 6 Administration is built on Vue) | `vue` |
 | **TypeScript** (type system, generics, utility types) | `typescript` |
-| DDEV CLI commands for Shopware (build, cache, plugin install) | `shopware-ddev` |
-| dustin/shopware-utils library (sub-bundles, auto-resources) | `shopware-utils` |
 | DDEV config, PHP/Node/DB version changes, port setup | `ddev-development` |
 
 > **Shopware 6 is built on Symfony.** All Symfony patterns (service container, event dispatcher, routing, console, forms, serializer, messenger, etc.) apply directly. See the `symfony` skill for the full Symfony reference.
