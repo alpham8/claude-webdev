@@ -41,6 +41,77 @@ install_claude()
     installed=$((installed + 1))
 }
 
+# Ergänzt fehlende Regel-Einträge in einer bestehenden opencode.json.
+# Nur der instructions-Array wird angefasst; alles andere bleibt Byte-identisch,
+# damit handgepflegte Provider-, Permission- und MCP-Blöcke erhalten bleiben.
+merge_opencode_instructions()
+{
+    declare -r CONFIG="$OPENCODE_DIR/opencode.json"
+
+    if ! command -v jq > /dev/null 2>&1; then
+        echo "    [!] jq nicht gefunden — opencode.json nicht geprüft."
+        echo "        Vergleiche $REPO_DIR/adapters/opencode/opencode.json manuell."
+        return 0
+    fi
+
+    if ! jq -e . "$CONFIG" > /dev/null 2>&1; then
+        echo "    [!] opencode.json ist kein gültiges JSON — nicht verändert."
+        echo "        Vergleiche $REPO_DIR/adapters/opencode/opencode.json manuell."
+        return 0
+    fi
+
+    if ! jq -e 'has("instructions")' "$CONFIG" > /dev/null 2>&1; then
+        echo "    [!] opencode.json hat keinen instructions-Block — nicht verändert."
+        echo "        Übernimm ihn aus $REPO_DIR/adapters/opencode/opencode.json."
+        return 0
+    fi
+
+    declare -a wanted=("~/.config/opencode/AGENTS.md")
+    declare rule=""
+    for rule in "$REPO_DIR/rules/"*.md; do
+        wanted+=("~/.config/opencode/rules/$(basename "$rule")")
+    done
+
+    declare -a existing=()
+    mapfile -t existing < <(jq -r '.instructions[]' "$CONFIG")
+
+    declare -a missing=()
+    declare entry=""
+    declare suffix=""
+    for entry in "${wanted[@]}"; do
+        # Verdrahtet gilt ein Eintrag, wenn ein bestehender Pfad auf dieselbe
+        # Datei zeigt — unabhängig davon, ob er ~/… oder absolut notiert ist.
+        suffix="/${entry#\~/.config/opencode/}"
+        if ! printf '%s\n' "${existing[@]}" | grep -qF -- "$suffix"; then
+            missing+=("$entry")
+        fi
+    done
+
+    if [ "${#missing[@]}" -eq 0 ]; then
+        echo "    opencode.json: alle ${#wanted[@]} Einträge bereits verdrahtet."
+        return 0
+    fi
+
+    cp "$CONFIG" "$CONFIG.bak-$(date +%Y%m%d-%H%M%S)"
+
+    declare -a merged=("${existing[@]}" "${missing[@]}")
+    declare new_body=""
+    new_body="$(printf '%s\n' "${merged[@]}" | jq -Rsr 'split("\n")[:-1] | map("    " + tojson) | join(",\n")')"
+
+    declare -r TMP_CONFIG="$CONFIG.tmp-$$"
+    NEW_BODY="$new_body" perl -0777 -pe 's/("instructions"\s*:\s*\[)[^\]]*\]/"$1\n" . $ENV{NEW_BODY} . "\n  ]"/e' "$CONFIG" > "$TMP_CONFIG"
+
+    if ! jq -e . "$TMP_CONFIG" > /dev/null 2>&1; then
+        rm -f "$TMP_CONFIG"
+        echo "    [!] Zusammenführung hätte ungültiges JSON erzeugt — abgebrochen."
+        echo "        Ergänze manuell: ${missing[*]}"
+        return 0
+    fi
+
+    mv "$TMP_CONFIG" "$CONFIG"
+    echo "    opencode.json: ${#missing[@]} fehlende Einträge ergänzt (${missing[*]##*/})"
+}
+
 install_opencode()
 {
     echo "==> opencode -> $OPENCODE_DIR"
@@ -62,8 +133,7 @@ install_opencode()
     cp "$REPO_DIR/adapters/opencode/plugins/hooks.ts" "$OPENCODE_DIR/plugins/hooks.ts"
 
     if [ -f "$OPENCODE_DIR/opencode.json" ]; then
-        echo "    [!] opencode.json existiert — nicht überschrieben."
-        echo "        Vergleiche $REPO_DIR/adapters/opencode/opencode.json manuell."
+        merge_opencode_instructions
     else
         cp "$REPO_DIR/adapters/opencode/opencode.json" "$OPENCODE_DIR/opencode.json"
     fi

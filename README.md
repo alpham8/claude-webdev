@@ -86,7 +86,7 @@ I quickly discovered that a single instruction file (`CLAUDE.md`, `AGENTS.md`, �
 | Script | Purpose | Exit codes |
 |---|---|---|
 | `validate-skills.sh` | Validates every skill against the Agent Skills spec: frontmatter present, `name` matches its directory and obeys the charset and 64-character limit, `description` within 1024 characters, `SKILL.md` correctly cased, no loose `.md` files in `skills/`. Warns on skills over 500 lines. | `0` clean, `1` violation, `2` usage error |
-| `check-sync.sh` | Checks for drift between the two adapters: the dangerous-command patterns and Prettier extensions shared between the shell hooks and `plugins/hooks.ts`, and that every file in `rules/` is wired into both `adapters/claude/CLAUDE.md` and `adapters/opencode/opencode.json`. | `0` clean, `1` drift |
+| `check-sync.sh` | Checks for drift between the adapters: the dangerous-command patterns and Prettier extensions shared between the shell hooks and `plugins/hooks.ts`, and that every file in `rules/` is wired into all three adapters (`adapters/claude/CLAUDE.md`, `adapters/opencode/opencode.json`, `adapters/qwen/QWEN.md`) with no dangling references in the other direction. | `0` clean, `1` drift |
 
 ### Skills
 
@@ -350,9 +350,20 @@ brew install uv
 
 Once the prerequisites above are installed, run `./install.sh` from the cloned
 repository root (see [Installation](#installation) at the top of this
-document). It copies rules and skills into `~/.claude` for Claude Code and
-into `~/.config/opencode` for opencode. An existing `settings.json` /
-`opencode.json` is **not** overwritten — merge manually.
+document). It copies rules and skills into `~/.claude` for Claude Code,
+`~/.config/opencode` for opencode and `~/.qwen` for Qwen Code — only for the
+agents it actually detects. Anything it is about to replace is backed up first
+to a timestamped `backup-<date>` directory.
+
+An existing `settings.json` is **not** overwritten — merge manually.
+
+An existing `opencode.json` is **kept**, but its `instructions` array is
+extended in place: the installer uses `jq` to find rules that are on disk yet
+not wired up, and appends only those. Your own entries, ordering, provider
+blocks, permissions and MCP servers stay byte-identical, and a
+`opencode.json.bak-<date>` is written before any change. Without `jq`, or if
+the file is invalid JSON or has no `instructions` array, the installer leaves
+it untouched and tells you what to add.
 
 ---
 
