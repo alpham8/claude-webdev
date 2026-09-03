@@ -38,4 +38,5 @@ This rule applies to **all languages and frameworks** — PHP, TypeScript, Pytho
 - [ ] Migrations are reversible — `up` → `down` → `up` verified (see Section 13)
 - [ ] Accessibility: keyboard navigable, labels present, contrast sufficient (see Section 16)
 - [ ] User-visible strings use translation keys, not hardcoded text (see Section 17)
+- [ ] Every class, interface and method has a docblock; inline comments match the surrounding file (see Section 6)
 - [ ] Commit messages follow Conventional Commits format (see Section 18)

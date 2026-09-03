@@ -9,7 +9,7 @@ Implicit or inferred types are only acceptable where the type is unambiguous and
 |---|---|---|
 | **TypeScript** | No `any`. No `var`. `const` by default, `let` only when reassignment is needed. Explicit return types on exported functions. | `const count: number = 1;` |
 | **JavaScript** | No `var`. Prefer `const`. Migrate to TypeScript when feasible. | `const label = 'active';` |
-| **PHP** | `declare(strict_types=1);` in every file. Native type declarations on params, returns, properties. Docblocks only as supplements. | `function add(int $a, int $b): int` |
+| **PHP** | `declare(strict_types=1);` in every file. Native type declarations on params, returns, properties. Docblocks never replace a type — they supplement it with meaning (see Section 6). | `function add(int $a, int $b): int` |
 | **C# / .NET** | Prefer explicit types to `var`. Respect nullable reference types. Never suppress nullable warnings without justification. | `int count = 1;` |
 | **Python** | Type hints on all function signatures. Use `mypy` or `pyright` in strict mode where the project allows. | `def add(a: int, b: int) -> int:` |
 | **Bash / Shell** | Declare variable types with `declare -i` (integer), `-r` (readonly), `-a` (array) where applicable. Always quote variables. | `declare -i count=1` |
