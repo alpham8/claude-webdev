@@ -60,6 +60,7 @@ I quickly discovered that a single instruction file (`CLAUDE.md`, `AGENTS.md`, â
 | `skills/` | 31 domain-specific reference skills, tool-independent (Agent Skills standard) |
 | `adapters/claude/` | Claude Code specifics: `CLAUDE.md`, `settings.json`, hooks |
 | `adapters/opencode/` | opencode specifics: `AGENTS.md`, `opencode.json`, plugin hooks |
+| `scripts/` | Validation scripts for this repository's own rules and skills (not installed into projects) |
 
 ### Hooks
 
@@ -70,6 +71,13 @@ I quickly discovered that a single instruction file (`CLAUDE.md`, `AGENTS.md`, â
 | `phpstan-check.sh` | After Write / Edit on `*.php` | Runs PHPStan if `vendor/bin/phpstan` exists (non-blocking warning) |
 | `tsc-check.sh` | After Write / Edit on `*.ts` / `*.tsx` | Runs TypeScript type-check if `tsconfig.json` exists (non-blocking warning) |
 | `context-mode-cache-heal.mjs` | On session start | Repairs stale context-mode plugin cache install paths (symlinks, version-path normalization), honouring `CLAUDE_CONFIG_DIR` |
+
+### Scripts
+
+| Script | Purpose | Exit codes |
+|---|---|---|
+| `validate-skills.sh` | Validates every skill against the Agent Skills spec: frontmatter present, `name` matches its directory and obeys the charset and 64-character limit, `description` within 1024 characters, `SKILL.md` correctly cased, no loose `.md` files in `skills/`. Warns on skills over 500 lines. | `0` clean, `1` violation, `2` usage error |
+| `check-sync.sh` | Checks for drift between the two adapters: the dangerous-command patterns and Prettier extensions shared between the shell hooks and `plugins/hooks.ts`, and that every file in `rules/` is wired into both `adapters/claude/CLAUDE.md` and `adapters/opencode/opencode.json`. | `0` clean, `1` drift |
 
 ### Skills
 
