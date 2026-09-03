@@ -22,3 +22,6 @@ Thumbs.db
 
 # editor / IDEs':
 .idea/*
+
+# Agent working directories — never commit these
+.superpowers/
