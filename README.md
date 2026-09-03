@@ -29,6 +29,14 @@ npx skills add alpham8/agentic-webdev --agent '*' -g
 > solely from `install.sh`. Pulling skills alone gives you recommendations
 > without the rules that constrain them.
 
+**A note on GitHub Copilot.** Copilot reads skills from `~/.copilot/skills` and
+`~/.agents/skills`, so `npx skills add` serves it. Its instructions, however, are
+repository-scoped — `.github/copilot-instructions.md`, `AGENTS.md`, or
+`.github/instructions/*.instructions.md`, all committed into a repository. There is
+no file-based user-global mechanism, so the binding rules cannot be installed for
+Copilot the way they are for the three agents above; commit them into the
+repository instead.
+
 ## Why This Exists
 
 AI models are trained on the internet. The internet contains plenty of low-quality, insecure, and outdated code. To get consistently better output from AI coding assistants, you need to guide them with tools and instructions.
@@ -55,11 +63,12 @@ I quickly discovered that a single instruction file (`CLAUDE.md`, `AGENTS.md`, �
 
 | Path | Purpose |
 |---|---|
-| `install.sh` | Detects installed agents (Claude Code, opencode) and installs rules and skills for each, backing up existing files first |
+| `install.sh` | Detects installed agents (Claude Code, opencode, Qwen Code) and installs rules and skills for each, backing up existing files first |
 | `rules/` | 20 rule files — binding coding standards, tool-independent |
 | `skills/` | 31 domain-specific reference skills, tool-independent (Agent Skills standard) |
 | `adapters/claude/` | Claude Code specifics: `CLAUDE.md`, `settings.json`, hooks |
 | `adapters/opencode/` | opencode specifics: `AGENTS.md`, `opencode.json`, plugin hooks |
+| `adapters/qwen/` | Qwen Code specifics: `QWEN.md` with the rule imports |
 | `scripts/` | Validation scripts for this repository's own rules and skills (not installed into projects) |
 
 ### Hooks

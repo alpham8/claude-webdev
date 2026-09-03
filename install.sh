@@ -6,6 +6,7 @@ set -euo pipefail
 declare -r REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 declare -r CLAUDE_DIR="$HOME/.claude"
 declare -r OPENCODE_DIR="$HOME/.config/opencode"
+declare -r QWEN_DIR="$HOME/.qwen"
 
 declare -i installed=0
 
@@ -70,8 +71,32 @@ install_opencode()
     installed=$((installed + 1))
 }
 
+install_qwen()
+{
+    echo "==> Qwen Code -> $QWEN_DIR"
+    mkdir -p "$QWEN_DIR/rules" "$QWEN_DIR/skills"
+
+    if compgen -G "$QWEN_DIR/rules/*.md" > /dev/null || compgen -G "$QWEN_DIR/skills/*" > /dev/null || [ -f "$QWEN_DIR/QWEN.md" ]; then
+        declare -r BACKUP_DIR="$QWEN_DIR/backup-$(date +%Y%m%d-%H%M%S)"
+        mkdir -p "$BACKUP_DIR"
+        [ -d "$QWEN_DIR/rules" ] && cp -r "$QWEN_DIR/rules" "$BACKUP_DIR/rules"
+        [ -d "$QWEN_DIR/skills" ] && cp -r "$QWEN_DIR/skills" "$BACKUP_DIR/skills"
+        [ -f "$QWEN_DIR/QWEN.md" ] && cp "$QWEN_DIR/QWEN.md" "$BACKUP_DIR/QWEN.md"
+        echo "    [!] Bestehende Dateien gesichert nach $BACKUP_DIR"
+    fi
+
+    cp "$REPO_DIR/rules/"*.md "$QWEN_DIR/rules/"
+    cp -r "$REPO_DIR/skills/"* "$QWEN_DIR/skills/"
+    cp "$REPO_DIR/adapters/qwen/QWEN.md" "$QWEN_DIR/QWEN.md"
+
+    echo "    Kontextdatei: $QWEN_DIR/QWEN.md — mit \`/memory show\` in Qwen prüfbar."
+
+    installed=$((installed + 1))
+}
+
 [ -d "$CLAUDE_DIR" ] && install_claude
 [ -d "$OPENCODE_DIR" ] && install_opencode
+[ -d "$QWEN_DIR" ] && install_qwen
 
 if [ "$installed" -eq 0 ]; then
     echo "Kein Agent erkannt (weder $CLAUDE_DIR noch $OPENCODE_DIR)."

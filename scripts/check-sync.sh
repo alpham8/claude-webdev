@@ -120,6 +120,7 @@ print_header "Rules-Verdrahtung"
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 CLAUDE_MD="$REPO_ROOT/adapters/claude/CLAUDE.md"
 OPENCODE_JSON="$REPO_ROOT/adapters/opencode/opencode.json"
+QWEN_MD="$REPO_ROOT/adapters/qwen/QWEN.md"
 
 SECTION_DRIFT=0
 
@@ -127,6 +128,9 @@ SECTION_DRIFT=0
 # checks below both see the same "what is actually active" view of CLAUDE.md.
 CLAUDE_MD_STRIPPED="$TMPDIR_SYNC/claude_md_stripped"
 perl -0777 -pe 's/<!--.*?-->//gs' "$CLAUDE_MD" > "$CLAUDE_MD_STRIPPED"
+
+QWEN_MD_STRIPPED="$TMPDIR_SYNC/qwen_md_stripped"
+perl -0777 -pe 's/<!--.*?-->//gs' "$QWEN_MD" > "$QWEN_MD_STRIPPED"
 
 for rule in "$REPO_ROOT"/rules/*.md; do
     rule_file="$(basename "$rule")"
@@ -139,6 +143,12 @@ for rule in "$REPO_ROOT"/rules/*.md; do
 
     if ! grep -q "\"~/.config/opencode/rules/$rule_file\"" "$OPENCODE_JSON"; then
         echo -e "  ${RED}Nicht in opencode.json: $rule_file${NC}"
+        DRIFT=1
+        SECTION_DRIFT=1
+    fi
+
+    if ! grep -q "@rules/$rule_file" "$QWEN_MD_STRIPPED"; then
+        echo -e "  ${RED}Nicht in QWEN.md: $rule_file${NC}"
         DRIFT=1
         SECTION_DRIFT=1
     fi
@@ -160,6 +170,16 @@ while IFS= read -r ref; do
     [ -n "$ref" ] || continue
 
     if [ ! -f "$REPO_ROOT/rules/$ref" ]; then
+        echo -e "  ${RED}QWEN.md verweist auf fehlende Regel: $ref${NC}"
+        DRIFT=1
+        SECTION_DRIFT=1
+    fi
+done < <(grep -oP '(?<=@rules/)[A-Za-z0-9_-]+\.md' "$QWEN_MD_STRIPPED" || true)
+
+while IFS= read -r ref; do
+    [ -n "$ref" ] || continue
+
+    if [ ! -f "$REPO_ROOT/rules/$ref" ]; then
         echo -e "  ${RED}opencode.json verweist auf fehlende Regel: $ref${NC}"
         DRIFT=1
         SECTION_DRIFT=1
@@ -167,7 +187,7 @@ while IFS= read -r ref; do
 done < <(grep -oP '(?<=~/\.config/opencode/rules/)[A-Za-z0-9_-]+\.md' "$OPENCODE_JSON" || true)
 
 if [ "$SECTION_DRIFT" -eq 0 ]; then
-    echo -e "  ${GREEN}Alle $(ls "$REPO_ROOT"/rules/*.md | wc -l) Rules in beiden Adaptern verdrahtet${NC}"
+    echo -e "  ${GREEN}Alle $(ls "$REPO_ROOT"/rules/*.md | wc -l) Rules in allen drei Adaptern verdrahtet${NC}"
 fi
 
 # --- Result ---
